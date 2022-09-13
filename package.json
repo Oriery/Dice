@@ -16,7 +16,9 @@
     "sqlite3": "^5.0.4"
   },
   "scripts": {
-    "start": "cds run"
+    "start": "cds run",
+    "b": "mbt build -t gen --mtar mta.tar",
+    "d": "cf deploy gen/mta.tar"
   },
   "engines": {
     "node": "^16.15"
