@@ -1,0 +1,20 @@
+###
+POST http://localhost:4004/main/Users
+Content-Type: application/json
+
+{"Username": "Oriery",
+"Bio": "Just a nice guy.",
+"DateOfBirth": "2002-10-29",
+"Sex": 1,
+"Email": "aleksandr.panev.2002@gmail.com",
+"PhoneNumber": "+375296191617",
+"Salt": "testsalt",
+"PassHash": "testhashtesthashtesthashtesthash"
+}
+
+###
+GET http://localhost:4004/main/Users/903d7365-0a6c-4c55-931d-183a22d3f5fe
+
+
+###
+DELETE http://localhost:4004/main/Users/
