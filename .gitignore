@@ -1,4 +1,5 @@
 *.http
+Makefile_*.mta
 
 # CAP dice
 _out
