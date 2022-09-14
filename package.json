@@ -18,7 +18,8 @@
   "scripts": {
     "start": "cds run",
     "b": "mbt build -t gen --mtar mta.tar",
-    "d": "cf deploy gen/mta.tar"
+    "d": "cf deploy gen/mta.tar",
+    "a": "npm run b && npm run d"
   },
   "engines": {
     "node": "^16.15"

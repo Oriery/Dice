@@ -22,7 +22,7 @@ type MemberRole : Integer enum {
     Master    = 3;
 }
 
-
+@restrict: [{grant: '*'}]
 entity Events : cuid, managed {
     Name       : SText;
     Descr      : LText;
@@ -39,6 +39,7 @@ entity Events : cuid, managed {
     ChatId     : UUID;
 }
 
+@restrict: [{grant: '*'}]
 entity Users : cuid {
     Username    : String(16);
     Bio         : LText;

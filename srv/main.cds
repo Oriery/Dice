@@ -1,8 +1,10 @@
 using {io.dice} from '../db/model';
 
+@restrict: [{grant: '*'}]
 service Main {
+    
+    entity Events @(restrict: [{grant: '*'}]) as projection on dice.Events;
 
-    entity Events as projection on dice.Events;
-    entity Users  as projection on dice.Users;
+    entity Users @(restrict: [{grant: '*'}]) as projection on dice.Users;
 
 }
