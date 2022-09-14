@@ -24,7 +24,6 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: dice-auth
       - name: dice-db
 
   - name: dice-db-deployer
@@ -49,18 +48,8 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: dice-auth
 
 resources:
-  - name: dice-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: dice-${org}-${space}
-        tenant-mode: dedicated
   - name: dice-db
     type: com.sap.xs.hdi-container
     parameters:

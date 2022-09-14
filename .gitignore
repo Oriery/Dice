@@ -1,3 +1,5 @@
+*.http
+
 # CAP dice
 _out
 *.db

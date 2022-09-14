@@ -18,7 +18,7 @@
   "scripts": {
     "start": "cds run",
     "b": "mbt build -t gen --mtar mta.tar",
-    "d": "cf deploy gen/mta.tar",
+    "d": "cf deploy gen/mta.tar -f --retries 0",
     "a": "npm run b && npm run d"
   },
   "engines": {
@@ -55,9 +55,6 @@
     },
     "requires": {
       "[production]": {
-        "auth": {
-          "kind": "xsuaa"
-        },
         "db": {
           "kind": "hana-cloud"
         },
