@@ -15,5 +15,21 @@
       "authenticationType": "none",
       "csrfProtection": true
     }
+  ],
+  "cors": [
+    {
+      "uriPattern": ".*",
+      "allowedOrigin": [
+        {
+          "protocol": "http",
+          "host": "localhost",
+          "port": 10888
+        },
+        {
+          "protocol": "https",
+          "host": "fab4u-4empion.github.io"
+        }
+      ]
+    }
   ]
 }
