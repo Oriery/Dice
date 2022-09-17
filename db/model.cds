@@ -16,10 +16,9 @@ type Coordinates : {
 };
 
 type MemberRole : Integer enum {
-    Owner     = 0;
-    Player    = 1;
-    Spectator = 2;
-    Master    = 3;
+    Player    = 0;
+    Spectator = 1;
+    Master    = 2;
 }
 
 @restrict : [{grant : '*'}]
