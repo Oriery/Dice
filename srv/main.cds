@@ -7,4 +7,5 @@ service Main {
 
     entity Users @(restrict: [{grant: '*'}]) as projection on dice.Users;
 
+    action getUsersByIds(ids: array of String) returns array of Users;
 }
