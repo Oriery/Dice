@@ -3,7 +3,10 @@ using {io.dice} from '../db/model';
 @restrict: [{grant: '*'}]
 service Main {
     
-    entity Events @(restrict: [{grant: '*'}]) as projection on dice.Events;
+    entity Events @(restrict: [{grant: '*'}]) as projection on dice.Events
+    actions {
+        function generateChatID() returns UUID;
+    };
 
     entity Users @(restrict: [{grant: '*'}]) as projection on dice.Users;
 

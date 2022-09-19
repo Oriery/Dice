@@ -21,4 +21,10 @@ module.exports = cds.service.impl(async function () {
             req.data.chatID = uuidv4()
         }
     })
+
+    this.on("generateChatID", "Events", ({ req, params: [id] }) => {
+        newUUID = uuidv4()
+        cds.tx(req).run(UPDATE(Events, id).set`chatID = ${newUUID}`)
+        return newUUID
+    })
 })
