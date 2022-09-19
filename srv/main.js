@@ -1,5 +1,6 @@
 module.exports = cds.service.impl(async function () {
-    const { Users } = cds.entities
+    const { v4: uuidv4 } = require("uuid")
+    const { Users, Events } = cds.entities
 
     this.on("getUsersByIds", async (req) => {
         const { ids } = req.data
@@ -12,6 +13,12 @@ module.exports = cds.service.impl(async function () {
             return response
         } else {
             req.reject(400, 'No "ids" array found in body object')
+        }
+    })
+
+    this.before("CREATE", "Events", (req) => {
+        if (!req.data.chatID) {
+            req.data.chatID = uuidv4()
         }
     })
 })

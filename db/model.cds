@@ -35,7 +35,7 @@ entity Events : cuid, managed {
                  }
     timeStamp  : DateTime;
     isPublic   : Boolean;
-    chatId     : UUID;
+    chatID     : UUID;
 }
 
 @restrict : [{grant : '*'}]
