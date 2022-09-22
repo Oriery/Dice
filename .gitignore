@@ -1,5 +1,11 @@
 *.http
 Makefile_*.mta
+ 
+# generated fiori app
+app/events_list/dist
+resources/
+
+
 
 # CAP dice
 _out
