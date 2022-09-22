@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "cds run",
+    "h": "cds watch --profile hybrid",
     "b": "mbt build -t gen --mtar mta.tar",
     "d": "cf deploy gen/mta.tar -f --retries 0",
     "a": "npm run b && npm run d"

@@ -54,3 +54,53 @@ entity Users : cuid {
     salt        : String(8);
     passHash    : String(32);
 }
+
+annotate Events with {
+    name       @(Common : {Label : '{i18n>PropertyName}'});
+    descr      @(Common : {Label : '{i18n>PropertyDescr}'});
+    isPublic   @(Common : {Label : '{i18n>PropertyIsPublic}'});
+    timeStamp      @(Common : {Label : '{i18n>PropertyTimeStamp}'});
+    playersMax @(
+        Common        : {Label : '{i18n>PropertyPlayersMax}'},
+        Measures.Unit : '{i18n>MeasurePlayers}'
+    );
+};
+
+annotate Events with @(
+    UI : {
+        HeaderInfo : {
+            $Type : 'UI.HeaderInfoType',
+            TypeName : '{i18n>TypeNameSingularEvents}',
+            TypeNamePlural : '{i18n>TypeNamePluralEvents}',
+            Title: {$Type: 'UI.DataField', Value: name},
+            Description: {$Type: 'UI.DataField', Value: ID}
+        },
+        SelectionFields : [ID, name, descr, timeStamp, organizer.username, isPublic, playersMax],
+        LineItem : [
+            {$Type: 'UI.DataField', Value: name},
+            {$Type: 'UI.DataField', Value: descr},
+            {$Type: 'UI.DataField', Value: timeStamp},
+            {$Type: 'UI.DataField', Value: organizer.username, Label : '{i18n>PropertyOrganizerName}'},
+            {$Type: 'UI.DataField', Value: isPublic},
+            {$Type: 'UI.DataField', Value: playersMax}
+        ],
+        HeaderFacets : [
+            {$Type: 'UI.ReferenceFacet', Target: '@UI.FieldGroup#Common', Label: '{i18n>GroupCommon}'},
+            {$Type: 'UI.ReferenceFacet', Target: '@UI.DataPoint#Descr'}
+        ],
+        DataPoint#Descr : {
+            $Type : 'UI.DataPointType',
+            Value : descr,
+            Title : '{i18n>PropertyDescr}'
+        },
+        FieldGroup#Common : {
+            $Type : 'UI.FieldGroupType',
+            Data: [
+                {$Type: 'UI.DataField', Value: timeStamp},
+                {$Type: 'UI.DataField', Value: organizer.username, Label : '{i18n>PropertyOrganizerName}'},
+                {$Type: 'UI.DataField', Value: isPublic},
+                {$Type: 'UI.DataField', Value: playersMax}
+            ]
+        },
+}
+);
