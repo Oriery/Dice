@@ -102,5 +102,6 @@ annotate Events with @(
                 {$Type: 'UI.DataField', Value: playersMax}
             ]
         },
-}
+    },
+    odata.draft.enabled: true
 );
