@@ -20,7 +20,12 @@
     {
       "uriPattern": ".*",
       "allowedMethods": [
-        "OPTIONS", "POST", "GET", "HEAD", "DELETE", "PATCH"
+        "OPTIONS",
+        "POST",
+        "GET",
+        "HEAD",
+        "DELETE",
+        "PATCH"
       ],
       "allowedOrigin": [
         {
@@ -34,5 +39,6 @@
         }
       ]
     }
-  ]
+  ],
+  "welcomeFile": "/iodiceeventslist"
 }

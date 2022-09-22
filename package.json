@@ -1,72 +1,81 @@
 {
-  "name": "dice",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^6",
-    "@sap/xssec": "^3",
-    "express": "^4",
-    "hdb": "^0.19.0",
-    "passport": "^0",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "sqlite3": "^5.0.4"
-  },
-  "scripts": {
-    "start": "cds run",
-    "h": "cds watch --profile hybrid",
-    "b": "mbt build -t gen --mtar mta.tar",
-    "d": "cf deploy gen/mta.tar -f --retries 0",
-    "a": "npm run b && npm run d"
-  },
-  "engines": {
-    "node": "^16.15"
-  },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "env": {
-      "es2020": true,
-      "node": true,
-      "jest": true,
-      "mocha": true
+    "name": "dice",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^6",
+        "@sap/xssec": "^3",
+        "express": "^4",
+        "hdb": "^0.19.0",
+        "passport": "^0",
+        "uuid": "^9.0.0"
     },
-    "globals": {
-      "SELECT": true,
-      "INSERT": true,
-      "UPDATE": true,
-      "DELETE": true,
-      "CREATE": true,
-      "DROP": true,
-      "CDL": true,
-      "CQL": true,
-      "CXL": true,
-      "cds": true
+    "devDependencies": {
+        "@sap/ux-specification": "^1.102.6",
+        "sqlite3": "^5.0.4",
+        "rimraf": "^3.0.2"
     },
-    "rules": {
-      "no-console": "off",
-      "require-atomic-updates": "off"
-    }
-  },
-  "cds": {
-    "features": {
-      "fiori_preview": true
+    "scripts": {
+        "start": "cds run",
+        "h": "cds watch --profile hybrid",
+        "b": "mbt build -t gen --mtar mta.tar",
+        "d": "cf deploy gen/mta.tar -f --retries 0",
+        "a": "npm run b && npm run d",
+        "watch-events_list": "cds watch --open events_list/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy dice --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
     },
-    "requires": {
-      "[production]": {
-        "db": {
-          "kind": "hana-cloud"
+    "engines": {
+        "node": "^16.15"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
         },
-        "approuter": {
-          "kind": "cloudfoundry"
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
         }
-      },
-      "db": {
-        "kind": "sql"
-      }
-    }
-  }
+    },
+    "cds": {
+        "features": {
+            "fiori_preview": true
+        },
+        "requires": {
+            "[production]": {
+                "db": {
+                    "kind": "hana-cloud"
+                },
+                "approuter": {
+                    "kind": "cloudfoundry"
+                }
+            },
+            "db": {
+                "kind": "sql"
+            }
+        }
+    },
+    "sapux": [
+        "app/events_list"
+    ]
 }

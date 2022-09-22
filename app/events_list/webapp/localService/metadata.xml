@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Measures.V1.xml">
+        <edmx:Include Alias="Measures" Namespace="Org.OData.Measures.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="Main" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Events" EntityType="Main.Events">
+                    <NavigationPropertyBinding Path="organizer" Target="Users"/>
+                    <NavigationPropertyBinding Path="members" Target="Events_members"/>
+                </EntitySet>
+                <EntitySet Name="Users" EntityType="Main.Users"/>
+                <EntitySet Name="Events_members" EntityType="Main.Events_members">
+                    <NavigationPropertyBinding Path="up_" Target="Events"/>
+                    <NavigationPropertyBinding Path="user" Target="Users"/>
+                </EntitySet>
+                <ActionImport Name="getUsersByIds" Action="Main.getUsersByIds" EntitySet="Users"/>
+            </EntityContainer>
+            <EntityType Name="Events">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="name" Type="Edm.String" MaxLength="32"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1024"/>
+                <Property Name="playersMax" Type="Edm.Int32"/>
+                <Property Name="coords_lat" Type="Edm.Decimal" Scale="variable"/>
+                <Property Name="coords_lng" Type="Edm.Decimal" Scale="variable"/>
+                <Property Name="address" Type="Edm.String" MaxLength="64"/>
+                <NavigationProperty Name="organizer" Type="Main.Users">
+                    <ReferentialConstraint Property="organizer_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="organizer_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="members" Type="Collection(Main.Events_members)" Partner="up_">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="timeStamp" Type="Edm.DateTimeOffset"/>
+                <Property Name="isPublic" Type="Edm.Boolean"/>
+                <Property Name="chatID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="Users">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="username" Type="Edm.String" MaxLength="16"/>
+                <Property Name="bio" Type="Edm.String" MaxLength="1024"/>
+                <Property Name="dateOfBirth" Type="Edm.Date"/>
+                <Property Name="sex" Type="Edm.Int32"/>
+                <Property Name="email" Type="Edm.String" MaxLength="64"/>
+                <Property Name="phoneNumber" Type="Edm.String" MaxLength="16"/>
+                <Property Name="salt" Type="Edm.String" MaxLength="8"/>
+                <Property Name="passHash" Type="Edm.String" MaxLength="32"/>
+            </EntityType>
+            <EntityType Name="Events_members">
+                <Key>
+                    <PropertyRef Name="up__ID"/>
+                    <PropertyRef Name="user_ID"/>
+                </Key>
+                <NavigationProperty Name="up_" Type="Main.Events" Nullable="false" Partner="members">
+                    <ReferentialConstraint Property="up__ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="up__ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="user" Type="Main.Users">
+                    <ReferentialConstraint Property="user_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="user_ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="role" Type="Edm.Int32"/>
+            </EntityType>
+            <Function Name="generateChatID" IsBound="true" IsComposable="false">
+                <Parameter Name="in" Type="Main.Events"/>
+                <ReturnType Type="Edm.Guid"/>
+            </Function>
+            <Action Name="getUsersByIds" IsBound="false">
+                <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false"/>
+                <ReturnType Type="Collection(Main.Users)" Nullable="false"/>
+            </Action>
+            <Annotations Target="Main.Events">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="{i18n>TypeNameSingularEvents}"/>
+                            <PropertyValue Property="TypeNamePlural" String="{i18n>TypeNamePluralEvents}"/>
+                                <PropertyValue Property="Title">
+                                    <Record Type="UI.DataField">
+                                        <PropertyValue Property="Value" Path="name"/>
+                                    </Record>
+                                </PropertyValue>
+                                <PropertyValue Property="Description">
+                                    <Record Type="UI.DataField">
+                                        <PropertyValue Property="Value" Path="ID"/>
+                                    </Record>
+                                </PropertyValue>
+                            </Record>
+                        </Annotation>
+                        <Annotation Term="UI.SelectionFields">
+                            <Collection>
+                                <PropertyPath>ID</PropertyPath>
+                                <PropertyPath>name</PropertyPath>
+                                <PropertyPath>descr</PropertyPath>
+                                <PropertyPath>timeStamp</PropertyPath>
+                                <PropertyPath>organizer/username</PropertyPath>
+                                <PropertyPath>isPublic</PropertyPath>
+                                <PropertyPath>playersMax</PropertyPath>
+                            </Collection>
+                        </Annotation>
+                        <Annotation Term="UI.LineItem">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="name"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="descr"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="timeStamp"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="organizer/username"/>
+                                    <PropertyValue Property="Label" String="{i18n>PropertyOrganizerName}"/>
+                                    </Record>
+                                    <Record Type="UI.DataField">
+                                        <PropertyValue Property="Value" Path="isPublic"/>
+                                    </Record>
+                                    <Record Type="UI.DataField">
+                                        <PropertyValue Property="Value" Path="playersMax"/>
+                                    </Record>
+                                </Collection>
+                            </Annotation>
+                            <Annotation Term="UI.HeaderFacets">
+                                <Collection>
+                                    <Record Type="UI.ReferenceFacet">
+                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Common"/>
+                                        <PropertyValue Property="Label" String="{i18n>GroupCommon}"/>
+                                        </Record>
+                                        <Record Type="UI.ReferenceFacet">
+                                            <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#Descr"/>
+                                        </Record>
+                                    </Collection>
+                                </Annotation>
+                                <Annotation Term="UI.DataPoint" Qualifier="Descr">
+                                    <Record Type="UI.DataPointType">
+                                        <PropertyValue Property="Value" Path="descr"/>
+                                        <PropertyValue Property="Title" String="{i18n>PropertyDescr}"/>
+                                        </Record>
+                                    </Annotation>
+                                    <Annotation Term="UI.FieldGroup" Qualifier="Common">
+                                        <Record Type="UI.FieldGroupType">
+                                            <PropertyValue Property="Data">
+                                                <Collection>
+                                                    <Record Type="UI.DataField">
+                                                        <PropertyValue Property="Value" Path="timeStamp"/>
+                                                    </Record>
+                                                    <Record Type="UI.DataField">
+                                                        <PropertyValue Property="Value" Path="organizer/username"/>
+                                                        <PropertyValue Property="Label" String="{i18n>PropertyOrganizerName}"/>
+                                                        </Record>
+                                                        <Record Type="UI.DataField">
+                                                            <PropertyValue Property="Value" Path="isPublic"/>
+                                                        </Record>
+                                                        <Record Type="UI.DataField">
+                                                            <PropertyValue Property="Value" Path="playersMax"/>
+                                                        </Record>
+                                                    </Collection>
+                                                </PropertyValue>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                    <Annotations Target="Main.Events/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="Main.Events/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="Main.Events/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="Main.Events/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="Main.Events/name">
+                                                                <Annotation Term="Common.Label" String="{i18n>PropertyName}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="Main.Events/descr">
+                                                                    <Annotation Term="Common.Label" String="{i18n>PropertyDescr}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="Main.Events/playersMax">
+                                                                        <Annotation Term="Common.Label" String="{i18n>PropertyPlayersMax}"/>
+                                                                            <Annotation Term="Measures.Unit" String="{i18n>MeasurePlayers}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="Main.Events/timeStamp">
+                                                                                <Annotation Term="Common.Label" String="{i18n>PropertyTimeStamp}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="Main.Events/isPublic">
+                                                                                    <Annotation Term="Common.Label" String="{i18n>PropertyIsPublic}"/>
+                                                                                    </Annotations>
+                                                                                </Schema>
+                                                                            </edmx:DataServices>
+                                                                        </edmx:Edmx>
