@@ -19,6 +19,9 @@
   "cors": [
     {
       "uriPattern": ".*",
+      "allowedMethods": [
+        "OPTIONS", "POST", "GET", "HEAD", "DELETE", "PATCH"
+      ],
       "allowedOrigin": [
         {
           "protocol": "http",
